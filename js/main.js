@@ -5,7 +5,7 @@ function main() {
 function jsonCallback(parsedJson) {
   var treeRoot = parseInput(parsedJson);
   var svg = d3.select("body").append("svg")
-    .attr("height", 4500)
-    .attr("width", 4500);
+    .attr("height", 5000)
+    .attr("width", 2250);
   doLayout(treeRoot, svg);
 }
