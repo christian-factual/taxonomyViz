@@ -3,7 +3,6 @@ function doLayout(treeData, svg) {
   var nodes = tuple[0];
   var links = tuple[1];
 
-  // project the tree into a circular pattern
   var diagonal = d3.svg.diagonal.radial()
     .projection(function(d) {
       return [d.y, d.x / 180 * Math.PI];
