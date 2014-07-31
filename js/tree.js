@@ -95,3 +95,11 @@ function doLayoutMike(root, svg, diameter) {
 
   // d3.select(self.frameElement).style("height", diameter - 150 + "px");
 }
+
+function changeLanguage(language){
+  console.log("in the method");
+  d3.select("svg").selectAll("text")
+    .text(function(d){
+      return d.name[language];
+    })
+}
