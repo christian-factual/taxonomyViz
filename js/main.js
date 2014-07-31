@@ -1,11 +1,13 @@
 function main() {
-  $.getJSON("js/resources/factual_taxonomy.json", jsonCallback);
+  var parsedTaxonomy = parseInput(taxonomyJSON);
+  jsonCallback(parsedTaxonomy);
 }
 
-function jsonCallback(parsedJson) {
-  var treeRoot = parseInput(parsedJson);
+function jsonCallback(parsedTaxonomy) {
+  var diameter = 1500;
   var svg = d3.select("body").append("svg")
-    .attr("height", 5000)
-    .attr("width", 2250);
-  doLayout(treeRoot, svg);
+    .attr("height", diameter)
+    .attr("width", diameter);
+
+  doLayoutMike(parsedTaxonomy, svg, diameter);
 }
