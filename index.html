@@ -12,14 +12,16 @@
 
         <link rel="stylesheet" href="css/main.css">
         <script type="text/javascript" src="js/resources/d3.js"></script>
-        <script type="text/javascript" src="js/resources/underscore-min.js"></script>
+        <script type="text/javascript" src="js/resources/jquery-2.1.1.min.js"></script>
         <script type="text/javascript" src="js/parse.js"></script>
+        <script type="text/javascript" src="js/tree.js"></script>
+        <script type="text/javascript" src="js/main.js"></script>
     </head>
-    <body>
+    <body onload=main()>
         <div id="heading">
             <h1>Taxonomy Visualization</h1>
         </div>
-        
+
         <!-- Taxonomy Search Bar -->
         <input type="text" id="searchInput" class="inputfield" placeholder="Search" onkeydown="keyPress();"/>
 

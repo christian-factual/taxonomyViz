@@ -1,4 +1,6 @@
 function doLayout(treeData, svg) {
+  var group = svg.append("g")
+    .attr("transform", "translate(2250,2250)");
   var tuple = getTreeNodesAndLinks(treeData);
   var nodes = tuple[0];
   var links = tuple[1];
@@ -9,7 +11,7 @@ function doLayout(treeData, svg) {
     });
 
   // create the link svg elements
-  var linkCreator = svg.selectAll(".link")
+  var linkCreator = group.selectAll(".link")
     .data(links)
     .enter()
     .append("path")
@@ -18,7 +20,7 @@ function doLayout(treeData, svg) {
 
   // create group elements to contain node
   // circles and text
-  var nodeCreator = svg.selectAll(".node")
+  var nodeCreator = group.selectAll(".node")
     .data(nodes)
     .enter()
     .append("g")
@@ -41,13 +43,13 @@ function doLayout(treeData, svg) {
       return d.x < 180 ? "translate(8)" : "rotate(180)translate(-8)";
     })
     .text(function(d) {
-      return d.name;
+      return d.name["en"];
     });
 }
 
 function getTreeNodesAndLinks(treeData) {
   var tree = d3.layout.tree()
-    .size([700, 700])
+    .size([2250, 2250])
     .separation(function(a, b) {
       return (a.parent == b.parent ? 1 : 2) / a.depth;
     });
