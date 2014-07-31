@@ -68,30 +68,52 @@ function doLayoutMike(root, svg, diameter) {
 
   var svg = svg.append("g")
       .attr("transform", "translate(" + diameter / 2 + "," + diameter / 2 + ")");
+  var i = 0;
+  update(root, root, tree, svg, diagonal, i);
+}
 
+function update(node, root, tree, svg, diagonal, i) {
   var nodes = tree.nodes(root),
       links = tree.links(nodes);
 
+  var node = svg.selectAll(".node")
+      .data(nodes, function(d) {
+        return d.id || (d.id = ++i);
+      });
+
   var link = svg.selectAll(".link")
-      .data(links)
-    .enter().append("path")
+      .data(links, function(d) {
+        return d.target.id;
+      });
+    link.enter().append("path")
       .attr("class", "link")
       .attr("d", diagonal);
 
-  var node = svg.selectAll(".node")
-      .data(nodes)
-    .enter().append("g")
+  link.exit().remove();
+
+  var nodeEnter = node.enter().append("g")
       .attr("class", "node")
       .attr("transform", function(d) { return "rotate(" + (d.x - 90) + ")translate(" + d.y + ")"; })
+      .on("click", function(d) {
+        if (d.children) {
+          d.children_saved = d.children;
+          d.children = null;
+        }
+        else {
+          d.children = d.children_saved;
+          d.children_saved = null;
+        }
+        update(d, root, tree, svg, diagonal, i);
+      });
 
-  node.append("circle")
+  node.exit().remove();
+
+  nodeEnter.append("circle")
       .attr("r", 4.5);
 
-  node.append("text")
+  nodeEnter.append("text")
       .attr("dy", ".31em")
       .attr("text-anchor", function(d) { return d.x < 180 ? "start" : "end"; })
       .attr("transform", function(d) { return d.x < 180 ? "translate(8)" : "rotate(180)translate(-8)"; })
       .text(function(d) {return d.name['en']; });
-
-  // d3.select(self.frameElement).style("height", diameter - 150 + "px");
 }
