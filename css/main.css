@@ -60,7 +60,7 @@
     margin: 0 5%;
 }
 
-.dropdown{
+#dropdown{
     position: absolute;
     top: 80px;
     height: 24px;
