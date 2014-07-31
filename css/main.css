@@ -5,7 +5,7 @@
 }
 
 .node {
-  font: 8px sans-serif;
+  font: 8px Helvetica, Arial, sans-serif;
   letter-spacing: 0.05em;
   background-color: rgba(255,255,255,.7);
 }
