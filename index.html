@@ -13,12 +13,13 @@
         <link rel="stylesheet" href="css/main.css">
     </head>
     <body>
-        <!--[if lt IE 7]>
-            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-        <![endif]-->
+        <div id="heading">
+            <h1>Taxonomy Visualization</h1>
+        </div>
+        
+        <!-- Taxonomy Search Bar -->
+        <input type="text" id="searchInput" class="inputfield" placeholder="Search" onkeydown="keyPress();"/>
 
-        <!-- Add your site or application content here -->
-        <p>Hello world! This is HTML5 Boilerplate.</p>
     </body>
     <script type="text/javascript" src="js/resources/d3.js"></script>
     <script type="text/javascript" src="js/tree.js"></script>
