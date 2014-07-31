@@ -119,7 +119,6 @@ function update(node, root, tree, svg, diagonal, i) {
 }
 
 function changeLanguage(language){
-  console.log("in the method");
   d3.select("svg").selectAll("text")
     .text(function(d){
       return d.name[language];

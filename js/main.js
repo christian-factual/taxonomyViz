@@ -1,6 +1,7 @@
 function main() {
-	$('.dropdown').change(function(){
-		var lang = $('.dropdown').val(); //this should be the language
+	$('#dropdown').change(function(){
+		var lang = $('#dropdown').val(); //this should be the language
+		changeLanguage(lang);
 	});
 	var parsedTaxonomy = parseInput(taxonomyJSON);
 	jsonCallback(parsedTaxonomy);
