@@ -1,6 +1,5 @@
 $(document).ready(function() { 
     $("#searchInput").select2();
-    $("#dropdown").select2();
 });
 function keyPress(){
     //on enter
