@@ -1,18 +1,19 @@
-<<<<<<< Updated upstream
 .node circle {
   fill: #fff;
   stroke: steelblue;
-  stroke-width: 1.5px;
+  stroke-width: 1px;
 }
 
 .node {
-  font: 10px sans-serif;
+  font: 8px sans-serif;
+  letter-spacing: 0.05em;
+  background-color: rgba(255,255,255,.7);
 }
 
 .link {
   fill: none;
-  stroke: #ccc;
-  stroke-width: 1.5px;
+  stroke: #ddd;
+  stroke-width: .75px;
 }
 
 #heading{

@@ -1,4 +1,4 @@
-{
+var taxonomyJSON = {
   "1": {
     "labels": {
       "kr": "Factual 장소",
@@ -8280,4 +8280,4 @@
     ],
     "abstract": false
   }
-}
+};

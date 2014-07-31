@@ -16,5 +16,6 @@ function parseInput(json){
 			store[parent].children.push(entry);
 		}
 	}
+	console.log(store);
 	return store["1"];
 }
