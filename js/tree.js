@@ -117,3 +117,10 @@ function update(node, root, tree, svg, diagonal, i) {
       .attr("transform", function(d) { return d.x < 180 ? "translate(8)" : "rotate(180)translate(-8)"; })
       .text(function(d) {return d.name['en']; });
 }
+
+function changeLanguage(language){
+  d3.select("svg").selectAll("text")
+    .text(function(d){
+      return d.name[language];
+    })
+}
