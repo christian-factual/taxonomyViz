@@ -1,37 +1,36 @@
 function doLayout(treeData, parent) {
   var circleRadius = 4.5;
-  var height = getMaxTreeWidth(treeData)*15;
-  var width = 1300;
-  var svg = parent.append("svg")
-    .attr("height", height)
-    .attr("width", width);
+  var svg = parent.append("svg");
   var group = svg.append("g")
     .attr("transform", "translate("+(circleRadius*3+100)+")");
-
-  var tree = d3.layout.tree()
-    .size([height, width-(circleRadius*6)-120]);
 
   var diagonal = d3.svg.diagonal()
     .projection(function(d) {
       return [d.y, d.x];
     });
-  updateLayout(treeData, treeData, tree, group, diagonal)
+  updateLayout(treeData, treeData, svg, group, diagonal)
 }
 
-function updateLayout(source, root, tree, svg, diagonal) {
+function updateLayout(source, root, svg, group, diagonal) {
   var circleRadius = 4.5;
+  var height = getMaxTreeWidth(root)*15;
+  var width = 1300;
+  svg.attr("height", height)
+     .attr("width", width);
+  var tree = d3.layout.tree()
+    .size([height, width-(circleRadius*6)-120]);
   var duration = 500;
   var fastDuration = 100;
   var nodes = tree.nodes(root);//here
   var links = tree.links(nodes);
   root.x0 = root.x;
   root.y0 = root.y;
-  var node = svg.selectAll(".node")
+  var node = group.selectAll(".node")
       .data(nodes, function(d) {
         return d.id || (d.id = ++i);
       });
 
-  var link = svg.selectAll(".link")
+  var link = group.selectAll(".link")
       .data(links, function(d) {
         return d.target.id;
       });
@@ -53,7 +52,7 @@ function updateLayout(source, root, tree, svg, diagonal) {
           d.children = d.children_saved;
           d.children_saved = null;
         }
-        updateLayout(d, root, tree, svg, diagonal, i);
+        updateLayout(d, root, svg, group, diagonal);
       });
 
   nodeEnter.append("circle")
@@ -262,7 +261,7 @@ function update(source, root, tree, svg, diagonal) {
   nodeUpdate.select("circle")
             .attr("r", 4.5)
             .style("fill", function(d){
-              return d.children_saved ? getRadialColor(d) : "#fff"; 
+              return d.children_saved ? getRadialColor(d) : "#fff";
             })
             .style("stroke", function(d){
               return getRadialColor(d);
