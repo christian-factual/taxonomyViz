@@ -1,8 +1,12 @@
 function doLayout(treeData, svg) {
-  var group = svg.append("g");
+  var circleRadius = 4.5;
+  var group = svg.append("g")
+    .attr("transform", "translate("+circleRadius+")");
   var height = parseInt(svg.attr("height"));
   var width = parseInt(svg.attr("width"));
-  var tuple = getTreeNodesAndLinks(treeData, height, width);
+  var tuple = getTreeNodesAndLinks(treeData,
+                                   height,
+                                   width-(circleRadius*2));
   var nodes = tuple[0];
   var links = tuple[1];
 
@@ -32,7 +36,7 @@ function doLayout(treeData, svg) {
 
   // append node circles
   nodeCreator.append("circle")
-    .attr("r", 4.5);
+    .attr("r", circleRadius);
 
   // append node text
   nodeCreator.append("text")
