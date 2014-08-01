@@ -75,20 +75,20 @@ function doLayoutMike(root, svg, diameter) {
 
   var svg = svg.append("g")
       .attr("transform", "translate(" + diameter / 2 + "," + diameter / 2 + ")");
-  var i = 0;
   root.x0 = 0;
   root.y0 = 0;
-  update(root, root, tree, svg, diagonal, i);
+  showTopRow(root);
+  update(root, root, tree, svg, diagonal);
 }
 
-function update(source, root, tree, svg, diagonal, i) {
+function update(source, root, tree, svg, diagonal) {
   var duration = 1750;
   var fastDuration = 500;
   var nodes = tree.nodes(root);//here
   var links = tree.links(nodes);
   var node = svg.selectAll(".node")
       .data(nodes, function(d) {
-        return d.id || (d.id = ++i);
+        return d.id;
       });
 
   var link = svg.selectAll(".link")
@@ -111,7 +111,7 @@ function update(source, root, tree, svg, diagonal, i) {
           d.children_saved = null;
         }
 
-        update(d, root, tree, svg, diagonal, i);
+        update(d, root, tree, svg, diagonal);
       });
 
   nodeEnter.append("circle")
@@ -138,7 +138,9 @@ function update(source, root, tree, svg, diagonal, i) {
 
   nodeUpdate.select("circle")
             .attr("r", 4.5)
-            .style("fill", function(d){return d.children_saved ? getColor(d) : "#fff"; })
+            .style("fill", function(d){
+              return d.children_saved ? getColor(d) : "#fff"; 
+            })
             .style("stroke", function(d){
               return getColor(d); 
             });
@@ -209,16 +211,46 @@ function changeLanguage(language){
     })
 }
 
-
 function getColor(d){
   // console.log("Degrees: ", d.x, "radius: ", d.y, " depth: ", d.depth);
   //ask mike & nayeon about the lighting***
   var light = .5 + .05 * d.depth
-  if(d.y == 0){
-    //this is the root
-    d3.hsl(d.x, .5, d.y)
+  if(d.y === 0){
+    return d3.hsl(d.x, .5, d.y);
   }
   else{
     return d3.hsl(d.x, 1.0, light);
   }
 }
+
+function expandAll(root){
+  console.log("expanding all");
+  _.each(root.children, function(child){
+    expandAll(child);
+  });
+  if(root.children_saved){//if it is null that means that the children have been stored 
+    console.log("found one: ", root);
+    root.children = root.children_saved;
+    root.children_saved = null;
+    _.each(root.children, expandAll);
+  }
+}
+
+function showTopRow(root){
+  _.each(root.children, hideOuterChildren);
+}
+
+function hideOuterChildren(node){
+  _.each(node.children, function(child){
+    hideOuterChildren(child);
+  });
+  if(_.isEmpty(node.children)){
+    node.children = node.children;
+  }
+  else{
+    node.children_saved = node.children;
+    node.children = null;
+  }
+}
+
+

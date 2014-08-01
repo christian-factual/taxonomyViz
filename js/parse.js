@@ -5,7 +5,8 @@ function parseInput(json){
 		var entry = json[key];
 		var obj = {
 			name: entry.labels,
-			children: []
+			children: [],
+			id: key
 		};
 		store[key] = obj;
 	}
