@@ -44,17 +44,15 @@ $(document).ready( function() {
             var fullCategory = taxonomy[id];
             var relatedTerms = getKeyTerms(fullCategory);
             relatedTerms = relatedTerms.substring(0, relatedTerms.length-2);
-            searchInputOptions+='<optgroup label="'+relatedTerms+'"><option value="'+id+'">'+fullCategory+'</option></optgroup><br>';
+            searchInputOptions+='<optgroup label="'+relatedTerms+'"><option value="'+id+'" onmouseover="onSelectionHover('+id+')">'+fullCategory+'</option></optgroup><br>';
         }
         $("#searchInput").html(searchInputOptions);
     }
-<<<<<<< HEAD
-    $("#searchInput").html(searchInputOptions);
+    
+//    function onSelectHover(value){//value = category_id "154"
+//    }
 }
 
 $("#searchInput").chosen({no_results_text: "Oops, Nothing found!"});
-=======
->>>>>>> d88adf71d0e5f653a01563a16ea2061982bac5f5
 
-    $("#searchInput").chosen({no_results_text: "Oops, nothing found!"});
 });
