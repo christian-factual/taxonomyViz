@@ -19,7 +19,7 @@ body {
 }
 
 .highlighted .node text {
-    fill: rgba(0,0,0,.4);
+    fill: rgba(0,0,0,.5);
 }
 
 .node.approved-match {
@@ -33,8 +33,8 @@ body {
     z-index: 10000;
 }
 
-.highlighed .node.active circle {
-    stroke-width: 3px;
+.highlighted .node.active circle {
+    stroke-width: 2px;
 }
 
 .highlighted .node.approved-match text {

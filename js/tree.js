@@ -43,6 +43,15 @@ function updateLayout(source, root, tree, svg, diagonal) {
       })
       .attr("data-category-id", function(d) {
         return d.category_id;
+      });
+
+  nodeEnter.append("circle")
+      .attr("r", 1e-6) //making change for animation was 4.5
+      .style("fill", function(d) {
+        return d.children_saved ? getColor(d) : "#fff";
+      })
+      .style("stroke", function(d){
+        return getColor(d);
       })
       .on("click", function(d) {
         if (d.children) {
@@ -54,15 +63,6 @@ function updateLayout(source, root, tree, svg, diagonal) {
           d.children_saved = null;
         }
         updateLayout(d, root, tree, svg, diagonal, i);
-      });
-
-  nodeEnter.append("circle")
-      .attr("r", 1e-6) //making change for animation was 4.5
-      .style("fill", function(d) {
-        return d.children_saved ? getColor(d) : "#fff";
-      })
-      .style("stroke", function(d){
-        return getColor(d);
       });
 
   nodeEnter.append("text")
@@ -202,8 +202,8 @@ function doLayoutMike(root, parent) {
 }
 
 function update(source, root, tree, svg, diagonal) {
-  var duration = 1750;
-  var fastDuration = 500;
+  var duration = 500;
+  var fastDuration = 100;
   var nodes = tree.nodes(root);//here
   var links = tree.links(nodes);
   var node = svg.selectAll(".node")
@@ -223,6 +223,15 @@ function update(source, root, tree, svg, diagonal) {
       })
       .attr("data-category-id", function(d) {
         return d.category_id;
+      });
+
+  nodeEnter.append("circle")
+      .attr("r", 1e-6) //making change for animation was 4.5
+      .style("fill", function(d) {
+        return d.children_saved ? getColor(d) : "#fff";
+      })
+      .style("stroke", function(d){
+        return getColor(d);
       })
       .on("click", function(d) {
         if (d.children) {
@@ -235,15 +244,6 @@ function update(source, root, tree, svg, diagonal) {
         }
 
         update(d, root, tree, svg, diagonal);
-      });
-
-  nodeEnter.append("circle")
-      .attr("r", 1e-6) //making change for animation was 4.5
-      .style("fill", function(d) {
-        return d.children_saved ? getColor(d) : "#fff";
-      })
-      .style("stroke", function(d){
-        return getColor(d);
       });
 
   nodeEnter.append("text")
