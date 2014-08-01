@@ -1,6 +1,7 @@
 body {
     padding: 20px 0px;
 }
+
 .node circle {
   fill: #fff;
   stroke: steelblue;
@@ -17,26 +18,38 @@ body {
     fill: rgba(0,0,0,.7);
 }
 
-.node.active {
+.highlighted .node text {
+    fill: rgba(0,0,0,.4);
+}
+
+.node.approved-match {
+    font-size: 10px;
+    font-weight: bold;
+}
+
+.node.active{
     font-size: 12px;
-    font-color: #007fb2;
     font-weight: bold;
     z-index: 10000;
 }
 
-.node.active circle {
+.highlighed .node.active circle {
     stroke-width: 3px;
 }
 
-.node.active text {
-    fill: #222;
+.highlighted .node.approved-match text {
+    fill: rgba(0,0,0,.8);
+}
+
+.highlighted .node.active text {
+    fill: rgba(0,0,0,.8);
+    /*fill: #222;*/
     padding: 10px;
 }
 
-
 .link {
   fill: none;
-  stroke: #ddd; 
+  stroke: #eee; 
 /*dynamically adjust stroke for line color*/
   stroke-width: .75px;
 }

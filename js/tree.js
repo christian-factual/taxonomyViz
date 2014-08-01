@@ -346,13 +346,17 @@ function mouseoverEvents() {
 }
 
 function highlightCategory(categoryID) {
+  $('#treeVisContainer').addClass('highlighted');
   addActiveCategory(categoryID);
   addActiveParentCategory(categoryID);
+  addApprovedMultiCategories(categoryID);
 }
 
 function unhighlightCategory(categoryID) {
+  $('#treeVisContainer').removeClass('highlighted');
   removeActiveCategory(categoryID);
   removeActiveParentCategory(categoryID);
+  removeApprovedMultiCategories(categoryID);
 }
 
 function addActiveCategory(categoryID) {
@@ -372,6 +376,12 @@ function addActiveParentCategory(categoryID) {
   }
 }
 
+function addApprovedMultiCategories(categoryID) {
+  $.each(approvedSets[categoryID], function(i, value) {
+    d3.select('.node[data-category-id="' + value + '"]').classed('approved-match', true);
+  });
+} 
+
 function removeActiveCategory(categoryID) {
   var mainNode = d3.select('.node[data-category-id="' + categoryID + '"]');
   mainNode.classed('active', false);
@@ -388,6 +398,12 @@ function removeActiveParentCategory(categoryID) {
     removeActiveParentCategory(parent.category_id)
   }
 }
+
+function removeApprovedMultiCategories(categoryID) {
+  $.each(approvedSets[categoryID], function(i, value) {
+    d3.select('.node[data-category-id="' + value + '"]').classed('approved-match', false);
+  });
+} 
 
 function getColor(d){
   // console.log("Degrees: ", d.x, "radius: ", d.y, " depth: ", d.depth);
