@@ -8,24 +8,13 @@ function main() {
 }
 
 function jsonCallback(parsedTaxonomy) {
-  var diameter = $('#treeVisContainer').width();
-  var svg = d3.select("#treeVisContainer").append("svg")
-    .attr("height", diameter)
-    .attr("width", diameter);
-
   $("#viewLinear").change(function() {
-    svg.remove();
-    svg = d3.select("#treeVisContainer").append("svg")
-      .attr("height", diameter)
-      .attr("width", diameter);
-    doLayout(parsedTaxonomy, svg);
+    $("#treeVisContainer").empty();
+    doLayout(parsedTaxonomy, d3.select("#treeVisContainer"));
   });
   $("#viewRadial").change(function() {
-    svg.remove();
-    svg = d3.select("#treeVisContainer").append("svg")
-      .attr("height", diameter)
-      .attr("width", diameter);
-    doLayoutMike(parsedTaxonomy, svg, diameter);
+    $("#treeVisContainer").empty();
+    doLayoutMike(parsedTaxonomy, d3.select("#treeVisContainer"));
   });
-  doLayoutMike(parsedTaxonomy, svg, diameter);
+  doLayoutMike(parsedTaxonomy, d3.select("#treeVisContainer"));
 }

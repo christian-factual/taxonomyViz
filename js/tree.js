@@ -1,9 +1,12 @@
-function doLayout(treeData, svg) {
+function doLayout(treeData, parent) {
   var circleRadius = 4.5;
+  var height = 1000;
+  var width = 1000;
+  var svg = parent.append("svg")
+    .attr("height", height)
+    .attr("width", width);
   var group = svg.append("g")
     .attr("transform", "translate("+circleRadius+")");
-  var height = parseInt(svg.attr("height"));
-  var width = parseInt(svg.attr("width"));
   var tuple = getTreeNodesAndLinks(treeData,
                                    height,
                                    width-(circleRadius*2));
@@ -52,6 +55,29 @@ function doLayout(treeData, svg) {
     });
 }
 
+function getMaxTreeWidth(treeData) {
+  var depthCounts = {};
+  (function aux(treeData, depth) {
+    if (!(depth in depthCounts)) {
+      depthCounts[depth] = 1;
+    }
+    else {
+      depthCounts[depth]++;
+    }
+    if (treeData.children)
+      treeData.children.forEach(function(child) {
+        aux(child, depth+1);
+      });
+  })(treeData, 0);
+  var maxCount = 0;
+  for (var depth in depthCounts) {
+    if (depthCounts[depth] > maxCount) {
+      maxCount = depthCounts[depth];
+    }
+  }
+  return maxCount;
+}
+
 function getTreeNodesAndLinks(treeData, height, width) {
   var tree = d3.layout.tree()
     .size([height, width]);
@@ -62,7 +88,11 @@ function getTreeNodesAndLinks(treeData, height, width) {
   return [nodes, links];
 }
 
-function doLayoutMike(root, svg, diameter) {
+function doLayoutMike(root, parent) {
+  var diameter = $('#treeVisContainer').width();
+  var svg = parent.append("svg")
+    .attr("height", diameter)
+    .attr("width", diameter);
   var tree = d3.layout.tree()
       .size([360, diameter / 2 - 120])
       .separation(function(a, b) {
@@ -77,12 +107,12 @@ function doLayoutMike(root, svg, diameter) {
   var diagonal = d3.svg.diagonal.radial()
       .projection(function(d) { return [d.y, d.x / 180 * Math.PI]; });
 
-  var svg = svg.append("g")
+  var group = svg.append("g")
       .attr("transform", "translate(" + diameter / 2 + "," + diameter / 2 + ")");
   var i = 0;
   root.x0 = 0;
   root.y0 = 0;
-  update(root, root, tree, svg, diagonal, i);
+  update(root, root, tree, group, diagonal, i);
 }
 
 function update(source, root, tree, svg, diagonal, i) {
