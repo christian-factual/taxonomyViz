@@ -61,7 +61,14 @@ function doLayoutMike(root, svg, diameter) {
 
   var tree = d3.layout.tree()
       .size([360, diameter / 2 - 120])
-      .separation(function(a, b) { return (a.parent == b.parent ? 1 : 2) / a.depth; });
+      .separation(function(a, b) { 
+        if (a.depth == 0){
+          return (a.parent == b.parent ? 1 : 2);
+        }
+        else{
+          return (a.parent == b.parent ? 1 : 2) / a.depth; 
+        }
+      });
 
   var diagonal = d3.svg.diagonal.radial()
       .projection(function(d) { return [d.y, d.x / 180 * Math.PI]; });
@@ -109,7 +116,12 @@ function update(source, root, tree, svg, diagonal, i) {
 
   nodeEnter.append("circle")
       .attr("r", 1e-6) //making change for animation was 4.5
-      .style("fill", function(d) { return d.children_saved ? "lightsteelblue" : "#fff"; });
+      .style("fill", function(d) { 
+        return d.children_saved ? getColor(d) : "#fff"; 
+      })
+      .style("stroke", function(d){
+        return getColor(d); 
+      });
   
   nodeEnter.append("text")
       .attr("dy", ".31em")
@@ -124,7 +136,10 @@ function update(source, root, tree, svg, diagonal, i) {
 
   nodeUpdate.select("circle")
             .attr("r", 4.5)
-            .style("fill", function(d){return d.children_saved ? "lightsteelblue" : "#fff"; });
+            .style("fill", function(d){return d.children_saved ? getColor(d) : "#fff"; })
+            .style("stroke", function(d){
+              return getColor(d); 
+            });
 
   nodeUpdate.select("text")
             .style("fill-opacity", 1);
@@ -185,4 +200,18 @@ function changeLanguage(language){
     .text(function(d){
       return d.name[language];
     })
+}
+
+
+function getColor(d){
+  // console.log("Degrees: ", d.x, "radius: ", d.y, " depth: ", d.depth);
+  //ask mike & nayeon about the lighting***
+  var light = .5 + .05 * d.depth
+  if(d.y == 0){
+    //this is the root
+    d3.hsl(d.x, .5, d.y)
+  }
+  else{
+    return d3.hsl(d.x, 1.0, light);
+  }
 }
