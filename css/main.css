@@ -27,6 +27,7 @@
     font-family: Arial, Helvetica, sans-serif;
 }
 
+/*
 .inputfield{
     position: absolute;
     left: 1%;
@@ -39,9 +40,12 @@
     font-size:14px;
     border:1px solid #bfbfbf;
 }
+*/
 
 #searchInput{
+    position: absolute;
     display:block;
+    top:20%;
 }
 
 .sideTools{
@@ -70,3 +74,10 @@
     padding:3px;
     border:1px solid #bfbfbf;
 }
+
+.ui-autocomplete-category {
+    font-weight: bold;
+    padding: .2em .4em;
+    margin: .8em 0 .2em;
+    line-height: 1.5;
+  }
