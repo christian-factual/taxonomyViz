@@ -1,7 +1,8 @@
 function doLayout(treeData, svg) {
-  var group = svg.append("g")
-    //.attr("transform", "translate(2250,2250)");
-  var tuple = getTreeNodesAndLinks(treeData);
+  var group = svg.append("g");
+  var height = parseInt(svg.attr("height"));
+  var width = parseInt(svg.attr("width"));
+  var tuple = getTreeNodesAndLinks(treeData, height, width);
   var nodes = tuple[0];
   var links = tuple[1];
 
@@ -47,9 +48,9 @@ function doLayout(treeData, svg) {
     });
 }
 
-function getTreeNodesAndLinks(treeData) {
+function getTreeNodesAndLinks(treeData, height, width) {
   var tree = d3.layout.tree()
-    .size([5000, 2250]);
+    .size([height, width]);
 
   var nodes = tree.nodes(treeData);
   var links = tree.links(nodes);
@@ -60,12 +61,12 @@ function getTreeNodesAndLinks(treeData) {
 function doLayoutMike(root, svg, diameter) {
   var tree = d3.layout.tree()
       .size([360, diameter / 2 - 120])
-      .separation(function(a, b) { 
+      .separation(function(a, b) {
         if (a.depth == 0){
           return (a.parent == b.parent ? 1 : 2);
         }
         else{
-          return (a.parent == b.parent ? 1 : 2) / a.depth; 
+          return (a.parent == b.parent ? 1 : 2) / a.depth;
         }
       });
 
@@ -97,8 +98,8 @@ function update(source, root, tree, svg, diagonal, i) {
 
   var nodeEnter = node.enter().append("g")
       .attr("class", "node")
-      .attr("transform", function(d) { 
-        return "rotate(" + (source.x0 - 90) + ")translate(" + source.y0 + ")"; 
+      .attr("transform", function(d) {
+        return "rotate(" + (source.x0 - 90) + ")translate(" + source.y0 + ")";
       })
       .attr("data-category-id", function(d) {
         return d.category_id;
@@ -118,18 +119,18 @@ function update(source, root, tree, svg, diagonal, i) {
 
   nodeEnter.append("circle")
       .attr("r", 1e-6) //making change for animation was 4.5
-      .style("fill", function(d) { 
-        return d.children_saved ? getColor(d) : "#fff"; 
+      .style("fill", function(d) {
+        return d.children_saved ? getColor(d) : "#fff";
       })
       .style("stroke", function(d){
-        return getColor(d); 
+        return getColor(d);
       });
-  
+
   nodeEnter.append("text")
       .attr("dy", ".31em")
       .attr("text-anchor", function(d) { return d.x < 180 ? "start" : "end"; })
-      .attr("transform", function(d) { 
-          return d.x < 180 ? "translate(8)" : "rotate(180)translate(-8)"; 
+      .attr("transform", function(d) {
+          return d.x < 180 ? "translate(8)" : "rotate(180)translate(-8)";
       })
       .text(function(d) {return d.name['en']; })
       .style("fill-opacity", 1e-6);
@@ -142,17 +143,17 @@ function update(source, root, tree, svg, diagonal, i) {
             .attr("r", 4.5)
             .style("fill", function(d){return d.children_saved ? getColor(d) : "#fff"; })
             .style("stroke", function(d){
-              return getColor(d); 
+              return getColor(d);
             });
 
   nodeUpdate.select("text")
             .attr("text-anchor", function(d) { return d.x < 180 ? "start" : "end"; })
-            .attr("transform", function(d) { 
+            .attr("transform", function(d) {
               if(d.depth==0){
                 return "rotate(270)translate(-8)"
               }
               else{
-                return d.x < 180 ? "translate(8)" : "rotate(180)translate(-8)"; 
+                return d.x < 180 ? "translate(8)" : "rotate(180)translate(-8)";
               }
             })
             .style("fill-opacity", 1);
@@ -160,13 +161,13 @@ function update(source, root, tree, svg, diagonal, i) {
   // Transition exiting nodes to the parent's new position.
   var nodeExit = node.exit().transition()
        .duration(fastDuration)
-       .attr("transform", function(d) { 
+       .attr("transform", function(d) {
         //this is the line where the NaN is being used
         if(isNaN(root.x) || isNaN(source.x) ) {
           root.x = 0;
           root.x0 = 0;
         }
-        return "rotate(" + (source.x - 90) + ")translate(" + source.y + ")"; 
+        return "rotate(" + (source.x - 90) + ")translate(" + source.y + ")";
       })
        .remove();
 
