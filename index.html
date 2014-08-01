@@ -22,13 +22,12 @@
         <script src="js/resources/select2-3.5.1/select2.js"></script>
         <link rel="stylesheet" href="js/resources/select2-3.5.1/select2.css">
         <script src="js/resources/chosen_v1.1.0/chosen.jquery.js"></script>
-        <script src="js/resources/chosen_v1.1.0/chosen.jquery.min.js"></script>
         <link rel="stylesheet" href="js/resources/chosen_v1.1.0/chosen.css">
-        <link rel="stylesheet" href="js/resources/chosen_v1.1.0/chosen.min.css">
         <script type="text/javascript" src="js/parse.js"></script>
         <script type="text/javascript" src="js/tree.js"></script>
         <script type="text/javascript" src="js/main.js"></script>
         <script type="text/javascript" src="js/resources/taxonomy.js"></script>
+        <script type="text/javascript" src="js/resources/synonym_sets.js"></script>
         
         
     </head>
@@ -36,13 +35,12 @@
         <div id="heading">
             <h1>Taxonomy Visualization</h1>
         </div>
-
-        <!-- Taxonomy Search Bar -->
-<!--        <input type="text" id="searchInput" class="inputfield" placeholder="Search" onkeydown="keyPress();"/>-->
-            
-        <select id="searchInput">
-          <option value="en">English</option>d
-        </select>
+        
+        <!-- Taxonomy Search Bar / Select Categories List -->
+        <div id="searchCategories">
+            <select id="searchInput" data-placeholder="Search Categories">
+            </select>
+        </div>
         
         <div class="sideTools">
             <!-- Toggle Radial/Linear -->
