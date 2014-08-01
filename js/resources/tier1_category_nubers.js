@@ -1,3 +1,4 @@
+var countriesCount = 
 {
     "US": {
         "2": 35311,
