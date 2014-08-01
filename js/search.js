@@ -44,17 +44,21 @@ $(document).ready( function() {
             var fullCategory = taxonomy[id];
             var relatedTerms = getKeyTerms(fullCategory);
             relatedTerms = relatedTerms.substring(0, relatedTerms.length-2);
-            searchInputOptions+='<optgroup label="'+relatedTerms+'"><option value="'+id+'" onmouseover="onSelectionHover('+id+');">'+fullCategory+'</option></optgroup><br>';
+            searchInputOptions+='<optgroup label="'+relatedTerms+'"><option value="'+id+'">'+fullCategory+'</option></optgroup><br>';
         }
         $("#searchInput").html(searchInputOptions);
     }
-    
-    function onSelectHover(value){//value = category_id "154"
-        highlightCategory(value);
-        console.log("highlight");
-    }
-
-
-$("#searchInput").chosen({no_results_text: "Oops, Nothing found!"});
-
+   
+    $("#searchInput").chosen({no_results_text: "Oops, Nothing found!"});
+    $(document).on("mouseenter",".active-result", function(){
+        var finderNum = ($(this).data("option-array-index") - 1)/2;
+        var validID = $("#searchInput option").eq(finderNum).val();
+        highlightCategory(validID);
+    });
+    $(document).on("mouseleave",".active-result", function(){
+        var finderNum = ($(this).data("option-array-index") - 1)/2;
+        var validID = $("#searchInput option").eq(finderNum).val();
+        unhighlightCategory(validID);
+    });
 });
+
