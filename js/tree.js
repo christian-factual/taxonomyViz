@@ -9,7 +9,7 @@ function doLayout(treeData, parent) {
     .attr("transform", "translate("+(circleRadius*3+100)+")");
 
   var tree = d3.layout.tree()
-    .size([height, width-(circleRadius*6)-20]);
+    .size([height, width-(circleRadius*6)-120]);
 
   var diagonal = d3.svg.diagonal()
     .projection(function(d) {
