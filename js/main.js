@@ -8,8 +8,8 @@ function main() {
 }
 
 function jsonCallback(parsedTaxonomy) {
-  var diameter = 1500;
-  var svg = d3.select("body").append("svg")
+  var diameter = $('#treeVisContainer').width();
+  var svg = d3.select("#treeVisContainer").append("svg")
     .attr("height", diameter)
     .attr("width", diameter);
   doLayoutMike(parsedTaxonomy, svg, diameter);
