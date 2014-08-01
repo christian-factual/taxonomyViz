@@ -37,7 +37,6 @@ body {
 .link {
   fill: none;
   stroke: #ddd; 
-/*dynamically adjust stroke for line color*/
   stroke-width: .75px;
 }
 
@@ -51,6 +50,33 @@ body {
     font-family: Arial, Helvetica, sans-serif;
     font-size: 40px;
 }
+
+.infoBox{
+    margin: 30px 0px;
+    font-size:16px;
+    height: 200px;
+    font-family: Arial, Helvetica, sans-serif;
+
+}
+
+.parentsInfo{
+    height:20%;
+/*    border: 2px solid red;*/
+    font-size: 14px;
+}
+
+.categoryName{
+    height:50%;
+/*    border: 2px solid black;*/
+    font-size:22px;
+}
+
+.categoryDetails{
+    height:30%;
+/*    border: 2px solid blue;*/
+    font-size: 12px;
+}
+
 
 #searchCategories{
     width: 100%;

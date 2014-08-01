@@ -339,9 +339,11 @@ function changeLanguage(language){
 function mouseoverEvents() {
   d3.select("svg").selectAll(".node").on('mouseover', function(e) {
     highlightCategory(e.category_id);
+    populateInformation(e.category_id);
   });
   d3.select("svg").selectAll(".node").on('mouseout', function(e) {
     unhighlightCategory(e.category_id);
+    unpopulateInformation(e.category_id);
   });
 }
 
@@ -387,6 +389,43 @@ function removeActiveParentCategory(categoryID) {
     removeActiveCategory(parent.category_id);
     removeActiveParentCategory(parent.category_id)
   }
+}
+
+function getParentName(array){
+    var parentString = "";
+    var arraySize = array.length;
+    if(arraySize==1){
+        parentString+=array[0];
+    }else{
+        for(c=0; c<arraySize-1; c++){
+            parentString = parentString.concat(array[c]+' > ');
+        }
+        parentString += array[arraySize-1]
+    }
+    return parentString;
+}
+
+function populateInformation(categoryID){
+    var flatCategory = flatTaxonomy[categoryID];
+    var flatCatArray = flatCategory.split(" > ");
+    if(flatCatArray.length==1){
+        $(".parentsInfo").html();
+        $(".categoryName").html(flatCategory);
+    }else{
+        var catName = flatCatArray[flatCatArray.length-1];
+        flatCatArray.pop();
+        var parentName = getParentName(flatCatArray);
+        $(".parentsInfo").html(parentName);
+        $(".categoryName").html(catName);
+    }
+    $(".categoryDetails").html("Get Counts by Country: <br>");
+}
+
+function unpopulateInformation(categoryID){
+    $(".parentsInfo").html();
+    $(".categoryName").html();
+    $(".categoryDetails").html();
+
 }
 
 function getColor(d){

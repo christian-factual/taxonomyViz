@@ -54,11 +54,13 @@ $(document).ready( function() {
         var finderNum = ($(this).data("option-array-index") - 1)/2;
         var validID = $("#searchInput option").eq(finderNum).val();
         highlightCategory(validID);
+        populateInformation(validID);
     });
     $(document).on("mouseleave",".active-result", function(){
         var finderNum = ($(this).data("option-array-index") - 1)/2;
         var validID = $("#searchInput option").eq(finderNum).val();
         unhighlightCategory(validID);
+        unpopulateInformation(validID);
     });
 });
 
