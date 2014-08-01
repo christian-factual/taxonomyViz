@@ -83,7 +83,7 @@ function doLayoutMike(root, svg, diameter) {
 
 function update(source, root, tree, svg, diagonal, i) {
   var duration = 1750;
-  var fastDuration = 750;
+  var fastDuration = 500;
   var nodes = tree.nodes(root);//here
   var links = tree.links(nodes);
   var node = svg.selectAll(".node")
@@ -126,7 +126,9 @@ function update(source, root, tree, svg, diagonal, i) {
   nodeEnter.append("text")
       .attr("dy", ".31em")
       .attr("text-anchor", function(d) { return d.x < 180 ? "start" : "end"; })
-      .attr("transform", function(d) { return d.x < 180 ? "translate(8)" : "rotate(180)translate(-8)"; })
+      .attr("transform", function(d) { 
+          return d.x < 180 ? "translate(8)" : "rotate(180)translate(-8)"; 
+      })
       .text(function(d) {return d.name['en']; })
       .style("fill-opacity", 1e-6);
 
@@ -142,6 +144,15 @@ function update(source, root, tree, svg, diagonal, i) {
             });
 
   nodeUpdate.select("text")
+            .attr("text-anchor", function(d) { return d.x < 180 ? "start" : "end"; })
+            .attr("transform", function(d) { 
+              if(d.depth==0){
+                return "rotate(270)translate(-8)"
+              }
+              else{
+                return d.x < 180 ? "translate(8)" : "rotate(180)translate(-8)"; 
+              }
+            })
             .style("fill-opacity", 1);
 
   // Transition exiting nodes to the parent's new position.
@@ -186,10 +197,6 @@ function update(source, root, tree, svg, diagonal, i) {
 
   // Stash the old positions for transition.
   nodes.forEach(function(d) {
-    if(isNaN(d.x)){
-      d.x = 0;
-      d.y = 0;
-    }
     d.x0 = d.x;
     d.y0 = d.y;
   });
