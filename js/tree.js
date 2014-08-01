@@ -345,26 +345,21 @@ function mouseoverEvents() {
   }
 
   d3.select("svg").selectAll(".node").on('mouseover', function(e) {
-    highlightCategory(e.category_id);
-    populateInformation(e.category_id);
-  });
-  d3.select("svg").selectAll(".node").on('mouseout', function(e) {
-    unhighlightCategory(e.category_id);
-    unpopulateInformation(e.category_id);
-
     if (categoryFrozen == null) {
       highlightCategory(e.category_id);
+      populateInformation(e.category_id);
     }
   });
   d3.select("svg").selectAll(".node").on('mouseout', function(e) {
     if (categoryFrozen == null) {
       unhighlightCategory(e.category_id);
+      unpopulateInformation(0);
     }
   });
 
   d3.select('svg').selectAll('text').on('click', function(e) {
     if (categoryFrozen == null) {
-      freezeCategory(e.category_id)
+      freezeCategory(e.category_id);
     } else {
       unfreezeCategory();
     }
@@ -382,7 +377,8 @@ function freezeCategory(categoryID) {
 
 function unfreezeCategory() {
   categoryFrozen = null;
-  d3.select("svg").selectAll(".node").classed('active', false).classed('approved-match', false)
+  d3.select("svg").selectAll(".node").classed('active', false).classed('approved-match', false);
+  unpopulateInformation(0);
 }
 
 function highlightCategory(categoryID) {
@@ -470,10 +466,9 @@ function populateInformation(categoryID){
 }
 
 function unpopulateInformation(categoryID){
-    $(".parentsInfo").html();
-    $(".categoryName").html();
-    $(".categoryDetails").html();
-
+    $(".parentsInfo").html('');
+    $(".categoryName").html('');
+    $(".categoryDetails").html('');
 }
 
 function removeApprovedMultiCategories(categoryID) {

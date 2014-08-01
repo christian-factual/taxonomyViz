@@ -74,19 +74,17 @@ body {
 }
 
 .parentsInfo{
-    height:20%;
 /*    border: 2px solid red;*/
     font-size: 14px;
+    color: #888;
 }
 
 .categoryName{
-    height:50%;
 /*    border: 2px solid black;*/
-    font-size:22px;
+    font-size:18px;
 }
 
 .categoryDetails{
-    height:30%;
 /*    border: 2px solid blue;*/
     font-size: 12px;
 }
