@@ -30,7 +30,7 @@
 #searchCategories{
     position: absolute;
     left: 1%;
-    top: 20%;
+    top: 15%;
     width: 60%;
     height: 24px;
     margin: 5px;
@@ -70,9 +70,6 @@
     border:1px solid #bfbfbf;
 }
 
-.ui-autocomplete-category {
-    font-weight: bold;
-    padding: .2em .4em;
-    margin: .8em 0 .2em;
-    line-height: 1.5;
-  }
+.group-result{
+    display:none !important;
+}

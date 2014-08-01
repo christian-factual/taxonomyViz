@@ -42,6 +42,7 @@ function populateSearchInput(){
     for(var id in taxonomy) {
         var fullCategory = taxonomy[id];
         var relatedTerms = getKeyTerms(fullCategory);
+        relatedTerms = relatedTerms.substring(0, relatedTerms.length-2);
         searchInputOptions+='<optgroup label="'+relatedTerms+'"><option value="'+id+'">'+fullCategory+'</option></optgroup><br>';
     }
     $("#searchInput").html(searchInputOptions);
