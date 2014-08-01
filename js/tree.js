@@ -1,7 +1,7 @@
 function doLayout(treeData, parent) {
   var circleRadius = 4.5;
   var height = getMaxTreeWidth(treeData)*15;
-  var width = 1100;
+  var width = 1300;
   var svg = parent.append("svg")
     .attr("height", height)
     .attr("width", width);
