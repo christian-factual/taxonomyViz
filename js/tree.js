@@ -71,19 +71,13 @@ function doLayoutMike(root, svg, diameter) {
   var i = 0;
   root.x0 = 0;
   root.y0 = 0;
-  console.log(root);
   update(root, root, tree, svg, diagonal, i);
 }
 
 function update(source, root, tree, svg, diagonal, i) {
   var duration = 1750;
   var fastDuration = 750;
-  console.log(root.x);
-
   var nodes = tree.nodes(root);//here
-  
-  console.log(root.x);
-
   var links = tree.links(nodes);
   var node = svg.selectAll(".node")
       .data(nodes, function(d) {
@@ -139,8 +133,8 @@ function update(source, root, tree, svg, diagonal, i) {
   var nodeExit = node.exit().transition()
        .duration(fastDuration)
        .attr("transform", function(d) { 
-        console.log("here", root.x, source.x);
-        if(isNaN(root.x) || isNaN(source.x)){
+        //this is the line where the NaN is being used
+        if(isNaN(root.x) || isNaN(source.x) ) {
           root.x = 0;
           root.x0 = 0;
         }
@@ -177,14 +171,12 @@ function update(source, root, tree, svg, diagonal, i) {
 
   // Stash the old positions for transition.
   nodes.forEach(function(d) {
-    console.log(d);
     if(isNaN(d.x)){
       d.x = 0;
       d.y = 0;
     }
     d.x0 = d.x;
     d.y0 = d.y;
-    console.log(d.x);
   });
 }
 
