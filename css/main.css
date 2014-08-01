@@ -21,10 +21,16 @@ body {
     font-size: 12px;
     font-color: #007fb2;
     font-weight: bold;
+    z-index: 10000;
+}
+
+.node.active circle {
+    stroke-width: 3px;
 }
 
 .node.active text {
     fill: #222;
+    padding: 10px;
 }
 
 
