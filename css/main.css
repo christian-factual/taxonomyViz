@@ -25,6 +25,7 @@
 #heading h1{
     color:#bfbfbf;
     font-family: Arial, Helvetica, sans-serif;
+    font-size: 40px;
 }
 
 #searchCategories{
@@ -63,9 +64,9 @@
     border:1px solid #bfbfbf;
 }
 
-.radioButtons{
+#radioButtons{
     position: absolute;
-    top:20%;
+    top: 120px;
     width: 90%;
     margin: 0 5%;
 }

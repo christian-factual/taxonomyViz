@@ -39,17 +39,11 @@
         
         <!-- Taxonomy Search Bar / Select Categories List -->
         <div id="searchCategories">
-            <select id="searchInput" data-placeholder="Search Categories">
+            <select id="searchInput" data-placeholder="Search Categories" multiple>
             </select>
         </div>
         
         <div class="sideTools">
-            <!-- Toggle Radial/Linear -->
-            <form class="radioButtons">
-                <input type="radio" name="view" value="radial">Radial View
-                <input type="radio" name="view" value="linear">Linear View
-            </form>
-            
             <!-- Select Language -->
             <select id="dropdown">
               <option value="en">English</option>
@@ -63,6 +57,12 @@
               <option value="fr">French</option>
               <option value="de">German</option>
             </select>
+            
+            <!-- Toggle Radial/Linear -->
+            <div id="radioButtons">
+                <input type="radio" name="view" value="radial">Radial View
+                <input type="radio" name="view" value="linear">Linear View
+            </div>
         </div>
         
         <script type="text/javascript" src="js/search.js"></script>
