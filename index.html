@@ -18,14 +18,14 @@
 
   <script type="text/javascript" src="js/resources/d3.js"></script>
   <script type="text/javascript" language="javascript" src="js/resources/factual_taxonomy.json"></script>
-  <script type="text/javascript" src="js/resources/jquery-2.1.1.min.js"></script>
-  <script type="text/javascript" src="js/resources/jquery-ui-1.11.0.custom/jquery-ui.js"></script>
+<!--  <script type="text/javascript" src="js/resources/jquery-2.1.1.min.js"></script>-->
+  <script type="text/javascript" src="js/jquery_1.7.2.js"></script>
+    <script type="text/javascript" src="js/resources/jquery-ui-1.11.0.custom/jquery-ui.js"></script>
   <script type="text/javascript" src="js/resources/select2-3.5.1/select2.js"></script>
   <script type="text/javascript" src="js/resources/chosen_v1.1.0/chosen.jquery.js"></script>
   <script type="text/javascript" src="js/parse.js"></script>
   <script type="text/javascript" src="js/tree.js"></script>
   <script type="text/javascript" src="js/main.js"></script>
-  <script type="text/javascript" src="js/search.js"></script>
   <script type="text/javascript" src="js/resources/taxonomy.js"></script>
   <script type="text/javascript" src="js/resources/synonym_sets.js"></script>
   <script type="text/javascript" src="js/search.js"></script>
@@ -37,7 +37,7 @@
       <div class="col-md-10">
         <div class="form-group">
           <div id="searchCategories">
-            <select id="searchInput" data-placeholder="Search Categories" multiple>
+            <select id="searchInput" class="chosen-select" data-placeholder="Search Categories" multiple>
             </select>
           </div>
           <!-- Taxonomy Search Bar -->
@@ -82,5 +82,6 @@
       </div>
     </div>
   </div>
+      <script type="text/javascript" src="js/search.js"></script>
 </body>
 </html>
