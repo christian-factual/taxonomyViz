@@ -13,6 +13,21 @@ body {
   background-color: rgba(255,255,255,.7);
 }
 
+.node text {
+    fill: rgba(0,0,0,.7);
+}
+
+.node.active {
+    font-size: 12px;
+    font-color: #007fb2;
+    font-weight: bold;
+}
+
+.node.active text {
+    fill: #222;
+}
+
+
 .link {
   fill: none;
   stroke: #ddd; 

@@ -58,7 +58,6 @@ function getTreeNodesAndLinks(treeData) {
 }
 
 function doLayoutMike(root, svg, diameter) {
-
   var tree = d3.layout.tree()
       .size([360, diameter / 2 - 120])
       .separation(function(a, b) { 
@@ -100,6 +99,9 @@ function update(source, root, tree, svg, diagonal, i) {
       .attr("class", "node")
       .attr("transform", function(d) { 
         return "rotate(" + (source.x0 - 90) + ")translate(" + source.y0 + ")"; 
+      })
+      .attr("data-category-id", function(d) {
+        return d.category_id;
       })
       .on("click", function(d) {
         if (d.children) {
@@ -200,6 +202,8 @@ function update(source, root, tree, svg, diagonal, i) {
     d.x0 = d.x;
     d.y0 = d.y;
   });
+
+  mouseoverEvents();
 }
 
 function changeLanguage(language){
@@ -207,6 +211,23 @@ function changeLanguage(language){
     .text(function(d){
       return d.name[language];
     })
+}
+
+function mouseoverEvents() {
+  d3.select("svg").selectAll(".node").on('mouseover', function(e) {
+    highlightCategory(e.category_id);
+  });
+  d3.select("svg").selectAll(".node").on('mouseout', function(e) {
+    unhighlightCategory(e.category_id);
+  });
+}
+
+function highlightCategory(categoryID) {
+    d3.select('.node[data-category-id="' + categoryID + '"]').classed('active', true);
+}
+
+function unhighlightCategory(categoryID) {
+    d3.select('.node[data-category-id="' + categoryID + '"]').classed('active', false);
 }
 
 

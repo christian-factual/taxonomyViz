@@ -3,6 +3,7 @@ function parseInput(json){
 	for(var key in json){
 		var entry = json[key];
 		var obj = {
+			category_id: key,
 			name: entry.labels,
 			children: []
 		};
