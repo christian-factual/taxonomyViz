@@ -1,9 +1,9 @@
 function parseInput(json){
-  console.log("json" + json);
 	var store = {};
 	for(var key in json){
 		var entry = json[key];
 		var obj = {
+			category_id: key,
 			name: entry.labels,
 			children: [],
 			id: key
@@ -17,6 +17,5 @@ function parseInput(json){
 			store[parent].children.push(entry);
 		}
 	}
-	console.log(store);
 	return store["1"];
 }

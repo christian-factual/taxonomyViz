@@ -1,4 +1,4 @@
-var taxonomy = {
+var flatTaxonomy = {
 2: "Automotive",
 3: "Automotive > Car Appraisers",
 4: "Automotive > Car Dealers and Leasing",
