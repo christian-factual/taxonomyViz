@@ -59,10 +59,10 @@ function updateLayout(source, root, tree, svg, diagonal) {
   nodeEnter.append("circle")
       .attr("r", 1e-6) //making change for animation was 4.5
       .style("fill", function(d) {
-        return d.children_saved ? getColor(d) : "#fff";
+        return d.children_saved ? getLinearColor(d) : "#fff";
       })
       .style("stroke", function(d){
-        return getColor(d);
+        return getLinearColor(d);
       });
 
   nodeEnter.append("text")
@@ -80,9 +80,9 @@ function updateLayout(source, root, tree, svg, diagonal) {
 
   nodeUpdate.select("circle")
             .attr("r", circleRadius)
-            .style("fill", function(d){return d.children_saved ? getColor(d) : "#fff"; })
+            .style("fill", function(d){return d.children_saved ? getLinearColor(d) : "#fff"; })
             .style("stroke", function(d){
-              return getColor(d);
+              return getLinearColor(d);
             });
 
   nodeUpdate.select("text")
@@ -240,10 +240,10 @@ function update(source, root, tree, svg, diagonal) {
   nodeEnter.append("circle")
       .attr("r", 1e-6) //making change for animation was 4.5
       .style("fill", function(d) {
-        return d.children_saved ? getColor(d) : "#fff";
+        return d.children_saved ? getRadialColor(d) : "#fff";
       })
       .style("stroke", function(d){
-        return getColor(d);
+        return getRadialColor(d);
       });
 
   nodeEnter.append("text")
@@ -262,10 +262,10 @@ function update(source, root, tree, svg, diagonal) {
   nodeUpdate.select("circle")
             .attr("r", 4.5)
             .style("fill", function(d){
-              return d.children_saved ? getColor(d) : "#fff";
+              return d.children_saved ? getRadialColor(d) : "#fff"; 
             })
             .style("stroke", function(d){
-              return getColor(d);
+              return getRadialColor(d);
             });
 
   nodeUpdate.select("text")
@@ -405,15 +405,24 @@ function removeApprovedMultiCategories(categoryID) {
   });
 }
 
-function getColor(d){
-  // console.log("Degrees: ", d.x, "radius: ", d.y, " depth: ", d.depth);
-  //ask mike & nayeon about the lighting***
+function getRadialColor(d){
   var light = .5 + .05 * d.depth
   if(d.y === 0){
     return d3.hsl(d.x, .5, d.y);
   }
   else{
     return d3.hsl(d.x, 1.0, light);
+  }
+}
+
+function getLinearColor(d){
+  var hue = (d.x/3300) * 360.0;
+  var light = .5 + .05 * d.depth
+  if(d.y === 0){
+    return d3.hsl(hue, .5, d.y);
+  }
+  else{
+    return d3.hsl(hue, 1.0, light);
   }
 }
 
