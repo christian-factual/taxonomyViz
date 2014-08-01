@@ -20,5 +20,12 @@ function jsonCallback(parsedTaxonomy) {
       .attr("width", diameter);
     doLayout(parsedTaxonomy, svg);
   });
+  $("#viewRadial").change(function() {
+    svg.remove();
+    svg = d3.select("#treeVisContainer").append("svg")
+      .attr("height", diameter)
+      .attr("width", diameter);
+    doLayoutMike(parsedTaxonomy, svg, diameter);
+  });
   doLayoutMike(parsedTaxonomy, svg, diameter);
 }
