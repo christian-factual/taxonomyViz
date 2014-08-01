@@ -6,7 +6,7 @@ function doLayout(treeData, parent) {
     .attr("height", height)
     .attr("width", width);
   var group = svg.append("g")
-    .attr("transform", "translate("+(circleRadius*3)+")");
+    .attr("transform", "translate("+(circleRadius*3+100)+")");
 
   var tree = d3.layout.tree()
     .size([height, width-(circleRadius*6)-20]);
@@ -262,7 +262,7 @@ function update(source, root, tree, svg, diagonal) {
   nodeUpdate.select("circle")
             .attr("r", 4.5)
             .style("fill", function(d){
-              return d.children_saved ? getColor(d) : "#fff"; 
+              return d.children_saved ? getColor(d) : "#fff";
             })
             .style("stroke", function(d){
               return getColor(d);
@@ -380,7 +380,7 @@ function addApprovedMultiCategories(categoryID) {
   $.each(approvedSets[categoryID], function(i, value) {
     d3.select('.node[data-category-id="' + value + '"]').classed('approved-match', true);
   });
-} 
+}
 
 function removeActiveCategory(categoryID) {
   var mainNode = d3.select('.node[data-category-id="' + categoryID + '"]');
@@ -403,7 +403,7 @@ function removeApprovedMultiCategories(categoryID) {
   $.each(approvedSets[categoryID], function(i, value) {
     d3.select('.node[data-category-id="' + value + '"]').classed('approved-match', false);
   });
-} 
+}
 
 function getColor(d){
   // console.log("Degrees: ", d.x, "radius: ", d.y, " depth: ", d.depth);
@@ -422,7 +422,7 @@ function expandAll(root){
   _.each(root.children, function(child){
     expandAll(child);
   });
-  if(root.children_saved){//if it is null that means that the children have been stored 
+  if(root.children_saved){//if it is null that means that the children have been stored
     console.log("found one: ", root);
     root.children = root.children_saved;
     root.children_saved = null;
