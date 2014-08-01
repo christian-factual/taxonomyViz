@@ -49,7 +49,21 @@ $(document).ready( function() {
         $("#searchInput").html(searchInputOptions);
     }
    
-    $("#searchInput").chosen({no_results_text: "Oops, Nothing found!"});
+    $("#searchInput").chosen({no_results_text: "Oops, Nothing found!", max_selected_options: 1}).change(function () {
+        // console.log();
+        if ($('#searchInput').chosen().val() == null) {
+            unfreezeCategory();
+        } else {
+            freezeCategory($('#searchInput').chosen().val()[0]);
+        }
+    });
+    // .change(function() {
+
+    //     var finderNum = ($(this).data("option-array-index") - 1)/2;
+    //     var validID = $("#searchInput option").eq(finderNum).val();
+    //     console.log(validID);
+    //     freezeCategory(validID);
+    // });
     $(document).on("mouseenter",".active-result", function(){
         var finderNum = ($(this).data("option-array-index") - 1)/2;
         var validID = $("#searchInput option").eq(finderNum).val();

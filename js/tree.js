@@ -1,37 +1,40 @@
+var categoryFrozen = null;
+
 function doLayout(treeData, parent) {
   var circleRadius = 4.5;
+  var svg = parent.append("svg");
   var height = getMaxTreeWidth(treeData)*15;
   var width = 1300;
-  var svg = parent.append("svg")
-    .attr("height", height)
-    .attr("width", width);
+  svg.attr("height", height)
+     .attr("width", width);
   var group = svg.append("g")
-    .attr("transform", "translate("+(circleRadius*3)+")");
-
-  var tree = d3.layout.tree()
-    .size([height, width-(circleRadius*6)-20]);
+    .attr("transform", "translate("+(circleRadius*3+100)+")");
 
   var diagonal = d3.svg.diagonal()
     .projection(function(d) {
       return [d.y, d.x];
     });
-  updateLayout(treeData, treeData, tree, group, diagonal)
+  updateLayout(treeData, treeData, svg, group, diagonal)
 }
 
-function updateLayout(source, root, tree, svg, diagonal) {
+function updateLayout(source, root, svg, group, diagonal) {
   var circleRadius = 4.5;
+  var height = getMaxTreeWidth(root)*15;
+  var width = 1300;
+  var tree = d3.layout.tree()
+    .size([height, width-(circleRadius*6)-120]);
   var duration = 500;
   var fastDuration = 100;
   var nodes = tree.nodes(root);//here
   var links = tree.links(nodes);
   root.x0 = root.x;
   root.y0 = root.y;
-  var node = svg.selectAll(".node")
+  var node = group.selectAll(".node")
       .data(nodes, function(d) {
         return d.id || (d.id = ++i);
       });
 
-  var link = svg.selectAll(".link")
+  var link = group.selectAll(".link")
       .data(links, function(d) {
         return d.target.id;
       });
@@ -43,6 +46,15 @@ function updateLayout(source, root, tree, svg, diagonal) {
       })
       .attr("data-category-id", function(d) {
         return d.category_id;
+      });
+
+  nodeEnter.append("circle")
+      .attr("r", 1e-6) //making change for animation was 4.5
+      .style("fill", function(d) {
+        return d.children_saved ? getLinearColor(d) : "#fff";
+      })
+      .style("stroke", function(d){
+        return getLinearColor(d);
       })
       .on("click", function(d) {
         if (d.children) {
@@ -53,16 +65,7 @@ function updateLayout(source, root, tree, svg, diagonal) {
           d.children = d.children_saved;
           d.children_saved = null;
         }
-        updateLayout(d, root, tree, svg, diagonal, i);
-      });
-
-  nodeEnter.append("circle")
-      .attr("r", 1e-6) //making change for animation was 4.5
-      .style("fill", function(d) {
-        return d.children_saved ? getColor(d) : "#fff";
-      })
-      .style("stroke", function(d){
-        return getColor(d);
+        updateLayout(d, root, svg, group, diagonal);
       });
 
   nodeEnter.append("text")
@@ -80,9 +83,9 @@ function updateLayout(source, root, tree, svg, diagonal) {
 
   nodeUpdate.select("circle")
             .attr("r", circleRadius)
-            .style("fill", function(d){return d.children_saved ? getColor(d) : "#fff"; })
+            .style("fill", function(d){return d.children_saved ? getLinearColor(d) : "#fff"; })
             .style("stroke", function(d){
-              return getColor(d);
+              return getLinearColor(d);
             });
 
   nodeUpdate.select("text")
@@ -202,8 +205,8 @@ function doLayoutMike(root, parent) {
 }
 
 function update(source, root, tree, svg, diagonal) {
-  var duration = 1750;
-  var fastDuration = 500;
+  var duration = 500;
+  var fastDuration = 100;
   var nodes = tree.nodes(root);//here
   var links = tree.links(nodes);
   var node = svg.selectAll(".node")
@@ -223,6 +226,15 @@ function update(source, root, tree, svg, diagonal) {
       })
       .attr("data-category-id", function(d) {
         return d.category_id;
+      });
+
+  nodeEnter.append("circle")
+      .attr("r", 1e-6) //making change for animation was 4.5
+      .style("fill", function(d) {
+        return d.children_saved ? getRadialColor(d) : "#fff";
+      })
+      .style("stroke", function(d){
+        return getRadialColor(d);
       })
       .on("click", function(d) {
         if (d.children) {
@@ -235,15 +247,6 @@ function update(source, root, tree, svg, diagonal) {
         }
 
         update(d, root, tree, svg, diagonal);
-      });
-
-  nodeEnter.append("circle")
-      .attr("r", 1e-6) //making change for animation was 4.5
-      .style("fill", function(d) {
-        return d.children_saved ? getColor(d) : "#fff";
-      })
-      .style("stroke", function(d){
-        return getColor(d);
       });
 
   nodeEnter.append("text")
@@ -262,10 +265,10 @@ function update(source, root, tree, svg, diagonal) {
   nodeUpdate.select("circle")
             .attr("r", 4.5)
             .style("fill", function(d){
-              return d.children_saved ? getColor(d) : "#fff"; 
+              return d.children_saved ? getRadialColor(d) : "#fff";
             })
             .style("stroke", function(d){
-              return getColor(d);
+              return getRadialColor(d);
             });
 
   nodeUpdate.select("text")
@@ -337,6 +340,10 @@ function changeLanguage(language){
 }
 
 function mouseoverEvents() {
+  if (categoryFrozen != null) {
+    highlightCategory(categoryFrozen);
+  }
+
   d3.select("svg").selectAll(".node").on('mouseover', function(e) {
     highlightCategory(e.category_id);
     populateInformation(e.category_id);
@@ -344,17 +351,52 @@ function mouseoverEvents() {
   d3.select("svg").selectAll(".node").on('mouseout', function(e) {
     unhighlightCategory(e.category_id);
     unpopulateInformation(e.category_id);
+
+    if (categoryFrozen == null) {
+      highlightCategory(e.category_id);
+    }
   });
+  d3.select("svg").selectAll(".node").on('mouseout', function(e) {
+    if (categoryFrozen == null) {
+      unhighlightCategory(e.category_id);
+    }
+  });
+
+  d3.select('svg').selectAll('text').on('click', function(e) {
+    if (categoryFrozen == null) {
+      freezeCategory(e.category_id)
+    } else {
+      unfreezeCategory();
+    }
+  })
+}
+
+function freezeCategory(categoryID) {
+  d3.select("svg").selectAll(".node").classed('active', false).classed('approved-match', false)
+  categoryFrozen = categoryID;
+  $('#treeVisContainer').addClass('highlighted');
+  addActiveCategory(categoryID);
+  addActiveParentCategory(categoryID);
+  addApprovedMultiCategories(categoryID);
+}
+
+function unfreezeCategory() {
+  categoryFrozen = null;
+  d3.select("svg").selectAll(".node").classed('active', false).classed('approved-match', false)
 }
 
 function highlightCategory(categoryID) {
+  $('#treeVisContainer').addClass('highlighted');
   addActiveCategory(categoryID);
   addActiveParentCategory(categoryID);
+  addApprovedMultiCategories(categoryID);
 }
 
 function unhighlightCategory(categoryID) {
+  $('#treeVisContainer').removeClass('highlighted');
   removeActiveCategory(categoryID);
   removeActiveParentCategory(categoryID);
+  removeApprovedMultiCategories(categoryID);
 }
 
 function addActiveCategory(categoryID) {
@@ -372,6 +414,12 @@ function addActiveParentCategory(categoryID) {
     addActiveCategory(parent.category_id);
     addActiveParentCategory(parent.category_id)
   }
+}
+
+function addApprovedMultiCategories(categoryID) {
+  $.each(approvedSets[categoryID], function(i, value) {
+    d3.select('.node[data-category-id="' + value + '"]').classed('approved-match', true);
+  });
 }
 
 function removeActiveCategory(categoryID) {
@@ -428,9 +476,13 @@ function unpopulateInformation(categoryID){
 
 }
 
-function getColor(d){
-  // console.log("Degrees: ", d.x, "radius: ", d.y, " depth: ", d.depth);
-  //ask mike & nayeon about the lighting***
+function removeApprovedMultiCategories(categoryID) {
+  $.each(approvedSets[categoryID], function(i, value) {
+    d3.select('.node[data-category-id="' + value + '"]').classed('approved-match', false);
+  });
+}
+
+function getRadialColor(d){
   var light = .5 + .05 * d.depth
   if(d.y === 0){
     return d3.hsl(d.x, .5, d.y);
@@ -440,12 +492,23 @@ function getColor(d){
   }
 }
 
+function getLinearColor(d){
+  var hue = (d.x/3300) * 360.0;
+  var light = .5 + .05 * d.depth
+  if(d.y === 0){
+    return d3.hsl(hue, .5, d.y);
+  }
+  else{
+    return d3.hsl(hue, 1.0, light);
+  }
+}
+
 function expandAll(root){
   console.log("expanding all");
   _.each(root.children, function(child){
     expandAll(child);
   });
-  if(root.children_saved){//if it is null that means that the children have been stored 
+  if(root.children_saved){//if it is null that means that the children have been stored
     console.log("found one: ", root);
     root.children = root.children_saved;
     root.children_saved = null;

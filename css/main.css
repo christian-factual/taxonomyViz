@@ -1,6 +1,7 @@
 body {
     padding: 20px 0px;
 }
+
 .node circle {
   fill: #fff;
   stroke: steelblue;
@@ -14,30 +15,43 @@ body {
 }
 
 .node text {
-    fill: rgba(0,0,0,.7);
+    fill: rgba(0,0,0,.6);
 }
 
-.node.active {
+.highlighted .node text {
+    fill: rgba(0,0,0,.6);
+}
+
+.node.approved-match {
+    font-size: 9px;
+    font-weight: bold;
+}
+
+.node.active{
     font-size: 12px;
-    font-color: #007fb2;
     font-weight: bold;
     z-index: 10000;
 }
 
-.node.active circle {
-    stroke-width: 3px;
+.highlighted .node.active circle {
+    stroke-width: 2px;
 }
 
-.node.active text {
-    fill: #222;
+.highlighted .node.approved-match text {
+    fill: rgba(0,0,0,.8);
+}
+
+.highlighted .node.active text {
+    fill: rgba(0,0,0,1);
+    /*fill: #222;*/
     padding: 10px;
 }
 
-
 .link {
   fill: none;
-  stroke: #ddd; 
-  stroke-width: .75px;
+  stroke: #eee; 
+/*dynamically adjust stroke for line color*/
+  stroke-width: .5px;
 }
 
 #heading{
