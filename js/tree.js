@@ -15,55 +15,130 @@ function doLayout(treeData, parent) {
     .projection(function(d) {
       return [d.y, d.x];
     });
-
   updateLayout(treeData, treeData, tree, group, diagonal)
 }
 
-function updateLayout(source, root, tree, parent, diagonal) {
+function updateLayout(source, root, tree, svg, diagonal) {
   var circleRadius = 4.5;
-  var nodes = tree.nodes(root);
+  var duration = 500;
+  var fastDuration = 100;
+  var nodes = tree.nodes(root);//here
   var links = tree.links(nodes);
+  root.x0 = root.x;
+  root.y0 = root.y;
+  var node = svg.selectAll(".node")
+      .data(nodes, function(d) {
+        return d.id || (d.id = ++i);
+      });
 
-  var diagonal = d3.svg.diagonal()
-    .projection(function(d) {
-      return [d.y, d.x];
-    });
+  var link = svg.selectAll(".link")
+      .data(links, function(d) {
+        return d.target.id;
+      });
 
-  // create the link svg elements
-  var linkCreator = parent.selectAll(".link")
-    .data(links)
-    .enter()
-    .append("path")
-    .attr("class", "link")
-    .attr("d", diagonal);
+  var nodeEnter = node.enter().append("g")
+      .attr("class", "node")
+      .attr("transform", function(d) {
+        return "translate(" + source.y0 + "," + source.x0 + ")";
+      })
+      .attr("data-category-id", function(d) {
+        return d.category_id;
+      })
+      .on("click", function(d) {
+        if (d.children) {
+          d.children_saved = d.children;
+          d.children = null;
+        }
+        else {
+          d.children = d.children_saved;
+          d.children_saved = null;
+        }
+        updateLayout(d, root, tree, svg, diagonal, i);
+      });
 
-  // create group elements to contain node
-  // circles and text
-  var nodeCreator = parent.selectAll(".node")
-    .data(nodes)
-    .enter()
-    .append("g")
-    .attr("class", "node")
-    .attr("transform", function(d) {
-      return "translate(" + d.y +"," + d.x + ")";
-    });
+  nodeEnter.append("circle")
+      .attr("r", 1e-6) //making change for animation was 4.5
+      .style("fill", function(d) {
+        return d.children_saved ? getColor(d) : "#fff";
+      })
+      .style("stroke", function(d){
+        return getColor(d);
+      });
 
-  // append node circles
-  nodeCreator.append("circle")
-    .attr("r", circleRadius);
+  nodeEnter.append("text")
+      .attr("dy", ".31em")
+      .attr("text-anchor", function(d) { return d.children ? "start" : "end"; })
+      .attr("transform", function(d) {
+          return d.children ? "translate(8)" : "translate(-8)";
+      })
+      .text(function(d) {return d.name['en']; })
+      .style("fill-opacity", 1e-6);
 
-  // append node text
-  nodeCreator.append("text")
-    .attr("dy", ".31em")
-    .attr("text-anchor", function(d) {
-      return d.children ? "start" : "end";
-    })
-    .attr("dx", function(d) {
-      return d.children ? 8 : -8;
-    })
-    .text(function(d) {
-      return d.name["en"];
-    });
+  var nodeUpdate = node.transition()
+                       .duration(duration)
+                       .attr("transform", function(d) { return "translate(" + d.y + "," + d.x + ")"; });
+
+  nodeUpdate.select("circle")
+            .attr("r", circleRadius)
+            .style("fill", function(d){return d.children_saved ? getColor(d) : "#fff"; })
+            .style("stroke", function(d){
+              return getColor(d);
+            });
+
+  nodeUpdate.select("text")
+            .attr("text-anchor", function(d) { return d.children ? "start" : "end"; })
+            .attr("transform", function(d) {
+              return d.children ? "translate(8)" : "translate(-8)";
+            })
+            .style("fill-opacity", 1);
+
+  // Transition exiting nodes to the parent's new position.
+  var nodeExit = node.exit().transition()
+       .duration(fastDuration)
+       .attr("transform", function(d) {
+        //this is the line where the NaN is being used
+        if(isNaN(root.x) || isNaN(source.x) ) {
+          root.x = 0;
+          root.x0 = 0;
+        }
+        return "translate(" + source.y + "," + source.x + ")";
+      })
+       .remove();
+
+  nodeExit.select("circle")
+      .attr("r", 1e-6);
+
+  nodeExit.select("text")
+      .style("fill-opacity", 1e-6);
+
+  // Enter any new links at the parent's previous position.
+  link.enter().insert("path", "g")
+      .attr("class", "link")
+      .attr("d", function(d) {
+        var o = {x: source.x, y: source.y};
+        return diagonal({source: o, target: o});
+      });
+  // Transition links to their new position.
+  link.transition()
+      .duration(duration)
+      .attr("d", diagonal);
+
+  // Transition exiting nodes to the parent's new position.
+  link.exit().transition()
+      .duration(fastDuration)
+      .attr("d", function(d) {
+        var o = {x: source.x0, y: source.y0};
+        return diagonal({source: o, target: o});
+      })
+      .remove();
+
+  // Stash the old positions for transition.
+  nodes.forEach(function(d) {
+    d.x0 = d.x;
+    d.y0 = d.y;
+  });
+
+  mouseoverEvents();
 }
 
 function getMaxTreeWidth(treeData) {
@@ -282,9 +357,6 @@ function addActiveCategory(categoryID) {
   var mainNode = d3.select('.node[data-category-id="' + categoryID + '"]');
   mainNode.classed('active', true);
   mainNode.select('circle').attr('r', 9);
-  mainNode.select('text').attr("transform", function(d) {
-    return d.x < 180 ? "translate(16)" : "rotate(180)translate(-16)";
-  });
 }
 
 function addActiveParentCategory(categoryID) {
@@ -302,9 +374,6 @@ function removeActiveCategory(categoryID) {
   var mainNode = d3.select('.node[data-category-id="' + categoryID + '"]');
   mainNode.classed('active', false);
   mainNode.select('circle').attr('r', 4.5);
-  mainNode.select('text').attr("transform", function(d) {
-    return d.x < 180 ? "translate(8)" : "rotate(180)translate(-8)";
-  });
 }
 
 function removeActiveParentCategory(categoryID) {
