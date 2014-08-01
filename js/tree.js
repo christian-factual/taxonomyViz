@@ -258,13 +258,54 @@ function mouseoverEvents() {
 }
 
 function highlightCategory(categoryID) {
-    d3.select('.node[data-category-id="' + categoryID + '"]').classed('active', true);
+  addActiveCategory(categoryID);
+  addActiveParentCategory(categoryID);
 }
 
 function unhighlightCategory(categoryID) {
-    d3.select('.node[data-category-id="' + categoryID + '"]').classed('active', false);
+  removeActiveCategory(categoryID);
+  removeActiveParentCategory(categoryID);
 }
 
+function addActiveCategory(categoryID) {
+  var mainNode = d3.select('.node[data-category-id="' + categoryID + '"]');
+  mainNode.classed('active', true);
+  mainNode.select('circle').attr('r', 9);
+  mainNode.select('text').attr("transform", function(d) { 
+    return d.x < 180 ? "translate(16)" : "rotate(180)translate(-16)"; 
+  });
+}
+
+function addActiveParentCategory(categoryID) {
+  var nodeData = d3.select('.node[data-category-id="' + categoryID + '"]').data();
+  var parent = nodeData[0].parent;
+  if (parent == undefined) {
+    return;
+  } else {
+    addActiveCategory(parent.category_id);
+    addActiveParentCategory(parent.category_id)
+  }
+}
+
+function removeActiveCategory(categoryID) {
+  var mainNode = d3.select('.node[data-category-id="' + categoryID + '"]');
+  mainNode.classed('active', false);
+  mainNode.select('circle').attr('r', 4.5);
+  mainNode.select('text').attr("transform", function(d) { 
+    return d.x < 180 ? "translate(8)" : "rotate(180)translate(-8)"; 
+  });
+}
+
+function removeActiveParentCategory(categoryID) {
+  var nodeData = d3.select('.node[data-category-id="' + categoryID + '"]').data();
+  var parent = nodeData[0].parent;
+  if (parent == undefined) {
+    return;
+  } else {
+    removeActiveCategory(parent.category_id);
+    removeActiveParentCategory(parent.category_id)
+  }
+}
 
 function getColor(d){
   // console.log("Degrees: ", d.x, "radius: ", d.y, " depth: ", d.depth);
