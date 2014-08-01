@@ -6,20 +6,20 @@
 
 .node {
   font: 8px sans-serif;
-  letter-spacing: 0.05em;
+  letter-spacing: 1.2px;
   background-color: rgba(255,255,255,.7);
 }
 
 .link {
   fill: none;
-  stroke: #ddd;
+  stroke: #ddd; 
+/*dynamically adjust stroke for line color*/
   stroke-width: .75px;
 }
 
 #heading{
     position:absolute;
     margin: 0px 10px;
-    
 }
 
 #heading h1{
@@ -30,7 +30,7 @@
 #searchCategories{
     position: absolute;
     left: 1%;
-    top: 15%;
+    top: 80px;
     width: 60%;
     height: 24px;
     margin: 5px;
@@ -52,13 +52,6 @@
     width:17%;
 }
 
-.radioButtons{
-    position: absolute;
-    top:20%;
-    width: 90%;
-    margin: 0 5%;
-}
-
 #dropdown{
     position: absolute;
     top: 80px;
@@ -68,6 +61,13 @@
     font-size: 14px;
     padding:3px;
     border:1px solid #bfbfbf;
+}
+
+.radioButtons{
+    position: absolute;
+    top:20%;
+    width: 90%;
+    margin: 0 5%;
 }
 
 .group-result{
