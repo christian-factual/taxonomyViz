@@ -15,15 +15,15 @@ body {
 }
 
 .node text {
-    fill: rgba(0,0,0,.7);
+    fill: rgba(0,0,0,.6);
 }
 
 .highlighted .node text {
-    fill: rgba(0,0,0,.5);
+    fill: rgba(0,0,0,.6);
 }
 
 .node.approved-match {
-    font-size: 10px;
+    font-size: 9px;
     font-weight: bold;
 }
 
@@ -42,7 +42,7 @@ body {
 }
 
 .highlighted .node.active text {
-    fill: rgba(0,0,0,.8);
+    fill: rgba(0,0,0,1);
     /*fill: #222;*/
     padding: 10px;
 }
@@ -51,7 +51,7 @@ body {
   fill: none;
   stroke: #eee; 
 /*dynamically adjust stroke for line color*/
-  stroke-width: .75px;
+  stroke-width: .5px;
 }
 
 #heading{

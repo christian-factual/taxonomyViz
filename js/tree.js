@@ -1,3 +1,5 @@
+var categoryFrozen = null;
+
 function doLayout(treeData, parent) {
   var circleRadius = 4.5;
   var svg = parent.append("svg");
@@ -338,12 +340,42 @@ function changeLanguage(language){
 }
 
 function mouseoverEvents() {
+  if (categoryFrozen != null) {
+    highlightCategory(categoryFrozen);
+  }
+
   d3.select("svg").selectAll(".node").on('mouseover', function(e) {
-    highlightCategory(e.category_id);
+    if (categoryFrozen == null) {
+      highlightCategory(e.category_id);
+    }
   });
   d3.select("svg").selectAll(".node").on('mouseout', function(e) {
-    unhighlightCategory(e.category_id);
+    if (categoryFrozen == null) {
+      unhighlightCategory(e.category_id);
+    }
   });
+
+  d3.select('svg').selectAll('text').on('click', function(e) {
+    if (categoryFrozen == null) {
+      freezeCategory(e.category_id)
+    } else {
+      unfreezeCategory();
+    }
+  })
+}
+
+function freezeCategory(categoryID) {
+  d3.select("svg").selectAll(".node").classed('active', false).classed('approved-match', false)
+  categoryFrozen = categoryID;
+  $('#treeVisContainer').addClass('highlighted');
+  addActiveCategory(categoryID);
+  addActiveParentCategory(categoryID);
+  addApprovedMultiCategories(categoryID);
+}
+
+function unfreezeCategory() {
+  categoryFrozen = null;
+  d3.select("svg").selectAll(".node").classed('active', false).classed('approved-match', false)
 }
 
 function highlightCategory(categoryID) {
