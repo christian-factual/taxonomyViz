@@ -48,5 +48,5 @@ function populateSearchInput(){
     $("#searchInput").html(searchInputOptions);
 }
 
-$("#searchInput").chosen({no_results_text: "Oops, nothing found!"});
+$("#searchInput").chosen({no_results_text: "Oops, Nothing found!"});
 
