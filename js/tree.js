@@ -81,8 +81,8 @@ function doLayoutMike(root, svg, diameter) {
 }
 
 function update(source, root, tree, svg, diagonal, i) {
-  var duration = 1750;
-  var fastDuration = 500;
+  var duration = 500;
+  var fastDuration = 100;
   var nodes = tree.nodes(root);//here
   var links = tree.links(nodes);
   var node = svg.selectAll(".node")
