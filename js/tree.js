@@ -1,17 +1,28 @@
 function doLayout(treeData, parent) {
   var circleRadius = 4.5;
-  var height = 1000;
-  var width = 1000;
+  var height = getMaxTreeWidth(treeData)*15;
+  var width = 1100;
   var svg = parent.append("svg")
     .attr("height", height)
     .attr("width", width);
   var group = svg.append("g")
     .attr("transform", "translate("+circleRadius+")");
-  var tuple = getTreeNodesAndLinks(treeData,
-                                   height,
-                                   width-(circleRadius*2));
-  var nodes = tuple[0];
-  var links = tuple[1];
+
+  var tree = d3.layout.tree()
+    .size([height, width-(circleRadius*2)]);
+
+  var diagonal = d3.svg.diagonal()
+    .projection(function(d) {
+      return [d.y, d.x];
+    });
+
+  updateLayout(treeData, treeData, tree, group, diagonal)
+}
+
+function updateLayout(source, root, tree, parent, diagonal) {
+  var circleRadius = 4.5;
+  var nodes = tree.nodes(root);
+  var links = tree.links(nodes);
 
   var diagonal = d3.svg.diagonal()
     .projection(function(d) {
@@ -19,7 +30,7 @@ function doLayout(treeData, parent) {
     });
 
   // create the link svg elements
-  var linkCreator = group.selectAll(".link")
+  var linkCreator = parent.selectAll(".link")
     .data(links)
     .enter()
     .append("path")
@@ -28,7 +39,7 @@ function doLayout(treeData, parent) {
 
   // create group elements to contain node
   // circles and text
-  var nodeCreator = group.selectAll(".node")
+  var nodeCreator = parent.selectAll(".node")
     .data(nodes)
     .enter()
     .append("g")
@@ -271,8 +282,8 @@ function addActiveCategory(categoryID) {
   var mainNode = d3.select('.node[data-category-id="' + categoryID + '"]');
   mainNode.classed('active', true);
   mainNode.select('circle').attr('r', 9);
-  mainNode.select('text').attr("transform", function(d) { 
-    return d.x < 180 ? "translate(16)" : "rotate(180)translate(-16)"; 
+  mainNode.select('text').attr("transform", function(d) {
+    return d.x < 180 ? "translate(16)" : "rotate(180)translate(-16)";
   });
 }
 
@@ -291,8 +302,8 @@ function removeActiveCategory(categoryID) {
   var mainNode = d3.select('.node[data-category-id="' + categoryID + '"]');
   mainNode.classed('active', false);
   mainNode.select('circle').attr('r', 4.5);
-  mainNode.select('text').attr("transform", function(d) { 
-    return d.x < 180 ? "translate(8)" : "rotate(180)translate(-8)"; 
+  mainNode.select('text').attr("transform", function(d) {
+    return d.x < 180 ? "translate(8)" : "rotate(180)translate(-8)";
   });
 }
 
