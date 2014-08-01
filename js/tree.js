@@ -1,6 +1,10 @@
 function doLayout(treeData, parent) {
   var circleRadius = 4.5;
   var svg = parent.append("svg");
+  var height = getMaxTreeWidth(treeData)*15;
+  var width = 1300;
+  svg.attr("height", height)
+     .attr("width", width);
   var group = svg.append("g")
     .attr("transform", "translate("+(circleRadius*3+100)+")");
 
@@ -15,8 +19,6 @@ function updateLayout(source, root, svg, group, diagonal) {
   var circleRadius = 4.5;
   var height = getMaxTreeWidth(root)*15;
   var width = 1300;
-  svg.attr("height", height)
-     .attr("width", width);
   var tree = d3.layout.tree()
     .size([height, width-(circleRadius*6)-120]);
   var duration = 500;
