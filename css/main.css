@@ -9,7 +9,7 @@ body {
 }
 
 .node {
-  font: 8px Helvetica, Arial, sans-serif;
+  font: 9px Helvetica, Arial, sans-serif;
   letter-spacing: 0.05em;
   background-color: rgba(255,255,255,.7);
 }
@@ -23,7 +23,7 @@ body {
 }
 
 .node.approved-match {
-    font-size: 9px;
+    font-size: 10px;
     font-weight: bold;
 }
 
@@ -49,7 +49,7 @@ body {
 
 .link {
   fill: none;
-  stroke: #eee; 
+  stroke: #ddd; 
 /*dynamically adjust stroke for line color*/
   stroke-width: .5px;
 }

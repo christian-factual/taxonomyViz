@@ -4,7 +4,7 @@ function doLayout(treeData, parent) {
   var circleRadius = 4.5;
   var svg = parent.append("svg");
   var height = getMaxTreeWidth(treeData)*15;
-  var width = 1300;
+  var width = 1600;
   svg.attr("height", height)
      .attr("width", width);
   var group = svg.append("g")
@@ -20,7 +20,7 @@ function doLayout(treeData, parent) {
 function updateLayout(source, root, svg, group, diagonal) {
   var circleRadius = 4.5;
   var height = getMaxTreeWidth(root)*15;
-  var width = 1300;
+  var width = 1600;
   var tree = d3.layout.tree()
     .size([height, width-(circleRadius*6)-120]);
   var duration = 500;
@@ -178,7 +178,7 @@ function getTreeNodesAndLinks(treeData, height, width) {
 }
 
 function doLayoutMike(root, parent) {
-  var diameter = $('#treeVisContainer').width();
+  var diameter = $('#treeVisContainer').width()*6/5;
   var svg = parent.append("svg")
     .attr("height", diameter)
     .attr("width", diameter);
@@ -197,7 +197,7 @@ function doLayoutMike(root, parent) {
       .projection(function(d) { return [d.y, d.x / 180 * Math.PI]; });
 
   var group = svg.append("g")
-      .attr("transform", "translate(" + diameter / 2 + "," + diameter / 2 + ")");
+      .attr("transform", "translate(" + diameter / 2 + "," + diameter / 7 * 3 + ")");
   root.x0 = 0;
   root.y0 = 0;
   // showTopRow(root);
